@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import ytdl from 'ytdl-core';
+import ytdl from '@distube/ytdl-core'; // 여기가 핵심 수정 사항입니다!
 
-export const dynamic = 'force-dynamic'; // 캐싱 방지
-export const maxDuration = 60; // Vercel 타임아웃 연장
+export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -13,13 +13,11 @@ export async function GET(request) {
   }
 
   try {
-    // ASCII 변환용이므로 가장 낮은 화질(속도 최적화)
     const stream = ytdl(url, {
       quality: 'lowest',
       filter: 'audioandvideo',
     });
 
-    // Node Stream을 Web Stream으로 변환하여 반환
     const readable = new ReadableStream({
       start(controller) {
         stream.on('data', chunk => controller.enqueue(chunk));
