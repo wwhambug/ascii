@@ -1,4 +1,4 @@
-"dependencies": {
+"dependencies" : {
   
   "@distube/ytdl-core": "^4.13.5",
   
